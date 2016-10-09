@@ -19,4 +19,9 @@ class Tweets
     @tweets.select {|t| t[:tweet].match(tweet)}
   end
 
+  # 全ツイートを戻す
+  def all_tweets
+    @tweets.map {|t| t[:tweet]}
+  end
+
 end
