@@ -11,6 +11,8 @@ class Tweets
       # リプライ情報を抜き出す
       tweet[:to] = tweet[:tweet].match(/^(@\w+) .+$/).to_a[1]
       tweet[:to] and tweet[:tweet].gsub!(tweet[:to] , "")
+      # URLを抜き出す
+      tweet[:attachmentURL] = tweet[:tweet].match(%r|(http[s]?://.+/\w+)|).to_a[1]
       @tweets.push(tweet)
     end
     @tweets.shift
