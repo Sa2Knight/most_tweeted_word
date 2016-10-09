@@ -1,5 +1,7 @@
 class Tweets
 
+  attr_reader :tweets
+
   # 全ツイート一覧CSVファイルのファイル名でインスタンスを生成
   def initialize(filename)
     @tweets = []
@@ -13,6 +15,7 @@ class Tweets
       tweet[:to] and tweet[:tweet].gsub!(tweet[:to] , "")
       # URLを抜き出す
       tweet[:attachmentURL] = tweet[:tweet].match(%r|(http[s]?://.+/\w+)|).to_a[1]
+      tweet[:attachmentURL] and tweet[:tweet].gsub!(tweet[:attachmentURL] , "")
       @tweets.push(tweet)
     end
     @tweets.shift
