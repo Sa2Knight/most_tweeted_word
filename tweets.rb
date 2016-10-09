@@ -4,10 +4,13 @@ class Tweets
   def initialize(filename)
     @tweets = []
     File.foreach(filename) do |line|
+      # CSVファイルから日付とツイート内容を取得
       columns = line.split(',').map {|c| c[1..-2]}
       next if columns[3].nil? or columns[5].nil?
       tweet = {:date => columns[3] , :tweet => columns[5]}
+      # リプライ情報を抜き出す
       tweet[:to] = tweet[:tweet].match(/^(@\w+) .+$/).to_a[1]
+      tweet[:to] and tweet[:tweet].gsub!(tweet[:to] , "")
       @tweets.push(tweet)
     end
     @tweets.shift
