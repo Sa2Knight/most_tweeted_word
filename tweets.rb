@@ -11,11 +11,14 @@ class Tweets
       next if columns[3].nil? or columns[5].nil?
       tweet = {:date => columns[3] , :tweet => columns[5]}
       # リプライ情報を抜き出す
-      tweet[:to] = tweet[:tweet].match(/^(@\w+) .+$/).to_a[1]
-      tweet[:to] and tweet[:tweet].gsub!(tweet[:to] , "")
+      tweet[:to] = tweet[:tweet].scan(/(@[^ ^　]+).?/).to_a.flatten
+      tweet[:to].each {|rp| tweet[:tweet].gsub!(rp , "")}
       # URLを抜き出す
       tweet[:attachmentURL] = tweet[:tweet].match(%r|(http[s]?://.+/\w+)|).to_a[1]
       tweet[:attachmentURL] and tweet[:tweet].gsub!(tweet[:attachmentURL] , "")
+      # ハッシュタグを抜き出す
+      tweet[:hashtag] = tweet[:tweet].scan(%r|\s?(#[^ 　]+)\s?|).to_a.flatten
+      tweet[:hashtag].each {|ht| tweet[:tweet].gsub!(ht , "")}
       @tweets.push(tweet)
     end
     @tweets.shift
