@@ -13,7 +13,9 @@ def texts_to_words_count(texts , type)
   return counts
 end
 
-tweets = Tweets.new('tweets.csv').all_tweets
-texts_to_words_count(tweets , '名詞 一般').select {|k , v| k.size >= 2 && v >= 2}.sort {|(k1,v1),(k2,v2)| v2 <=> v1}.each_with_index do |n , i|
-  p "#{i + 1}位 #{n[0]} #{n[1]}回"
+filename = ARGV[0]
+type = ARGV[1]
+tweets = Tweets.new(filename).all_tweets
+texts_to_words_count(tweets , type).select {|k , v| k.size >= 2 && v >= 2}.sort {|(k1,v1),(k2,v2)| v2 <=> v1}.each_with_index do |n , i|
+  puts "#{i + 1}位 #{n[0]} #{n[1]}回"
 end
