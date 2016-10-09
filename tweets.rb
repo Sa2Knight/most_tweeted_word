@@ -5,7 +5,10 @@ class Tweets
     @tweets = []
     File.foreach(filename) do |line|
       columns = line.split(',').map {|c| c[1..-2]}
-      columns[3].nil? or columns[5].nil? or @tweets.push({:date => columns[3] , :tweet => columns[5]})
+      next if columns[3].nil? or columns[5].nil?
+      tweet = {:date => columns[3] , :tweet => columns[5]}
+      tweet[:to] = tweet[:tweet].match(/^(@\w+) .+$/).to_a[1]
+      @tweets.push(tweet)
     end
     @tweets.shift
   end
