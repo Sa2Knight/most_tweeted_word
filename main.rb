@@ -7,5 +7,5 @@ def text_to_types(text)
     sp = word.chomp.split(/\s/)
     words[sp[0]] = sp[1]
   end
-  p words
+  return words
 end
