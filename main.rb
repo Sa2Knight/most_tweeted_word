@@ -1,3 +1,13 @@
+# テキストを与えると、単語ごとに分割した配列を返却する
+def text_to_words(text)
+  words = []
+  result = `echo #{text} | mecab -E "" | awk -F'\t' '{print $1}'`
+  result.lines do |line|
+    words.push line.chomp
+  end
+  return words
+end
+
 # テキストを与えると、単語とその品詞のハッシュを返却する
 # text_to_types("私は歩く") => {"私" => "名詞" , "は" => "助詞" , "歩く" => "動詞"} 
 def text_to_types(text)
