@@ -15,17 +15,6 @@ class MecabClient
     return words
   end
 
-  # 単語ごとの出現回数をカウントする
-  def to_words_count
-    counts = Hash.new {|h , k| h[k] = 0}
-    @text.lines do |line|
-      MecabClient.new(line.chomp).to_words.each do |w|
-        counts[w] += 1
-      end
-    end
-    return counts
-  end
-
   # テキストを与えると、単語とその品詞のハッシュを返却する
   def to_types
     words = {}
