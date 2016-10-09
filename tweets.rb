@@ -1,5 +1,6 @@
 class Tweets
 
+  # 全ツイート一覧CSVファイルのファイル名でインスタンスを生成
   def initialize(filename)
     @tweets = []
     File.foreach(filename) do |line|
@@ -8,10 +9,12 @@ class Tweets
     end
   end
 
+  # 日付文字列を指定し、それに当てはまるツイートのリストを戻す
   def search_date(date)
     @tweets.select {|t| t[:date].match(date)}
   end
 
+  # テキストを指定し、それが含まれるツイートのリストを戻す
   def search_tweet(tweet)
     @tweets.select {|t| t[:tweet].match(tweet)}
   end
