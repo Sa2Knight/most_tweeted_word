@@ -11,7 +11,7 @@ class Tweets
       next if columns[3].nil? or columns[5].nil?
       tweet = {:date => columns[3] , :tweet => columns[5]}
       # リプライ情報を抜き出す
-      tweet[:reply_to] = tweet[:tweet].scan(/(@[^ ^　]+).?/).to_a.flatten
+      tweet[:reply_to] = tweet[:tweet].scan(/(@\w+).?/).to_a.flatten
       tweet[:reply_to].each {|rp| tweet[:tweet].gsub!(rp , "")}
       # URLを抜き出す
       tweet[:attachment_url] = tweet[:tweet].scan(%r|(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)|).to_a.flatten
