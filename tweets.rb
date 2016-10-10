@@ -11,14 +11,14 @@ class Tweets
       next if columns[3].nil? or columns[5].nil?
       tweet = {:date => columns[3] , :tweet => columns[5]}
       # リプライ情報を抜き出す
-      tweet[:to] = tweet[:tweet].scan(/(@[^ ^　]+).?/).to_a.flatten
-      tweet[:to].each {|rp| tweet[:tweet].gsub!(rp , "")}
+      tweet[:reply_to] = tweet[:tweet].scan(/(@[^ ^　]+).?/).to_a.flatten
+      tweet[:reply_to].each {|rp| tweet[:tweet].gsub!(rp , "")}
       # URLを抜き出す
-      tweet[:attachmentURL] = tweet[:tweet].scan(%r|(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)|).to_a.flatten
-      tweet[:attachmentURL].each {|au| tweet[:tweet].gsub!(au , "")}
+      tweet[:attachment_url] = tweet[:tweet].scan(%r|(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)|).to_a.flatten
+      tweet[:attachment_url].each {|au| tweet[:tweet].gsub!(au , "")}
       # ハッシュタグを抜き出す
-      tweet[:hashtag] = tweet[:tweet].scan(%r|\s?(#[^ 　]+)\s?|).to_a.flatten
-      tweet[:hashtag].each {|ht| tweet[:tweet].gsub!(ht , "")}
+      tweet[:hash_tag] = tweet[:tweet].scan(%r|\s?(#[^ 　]+)\s?|).to_a.flatten
+      tweet[:hash_tag].each {|ht| tweet[:tweet].gsub!(ht , "")}
       @tweets.push(tweet)
     end
     @tweets.shift
