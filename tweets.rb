@@ -14,8 +14,8 @@ class Tweets
       tweet[:to] = tweet[:tweet].scan(/(@[^ ^　]+).?/).to_a.flatten
       tweet[:to].each {|rp| tweet[:tweet].gsub!(rp , "")}
       # URLを抜き出す
-      tweet[:attachmentURL] = tweet[:tweet].match(%r|(http[s]?://.+/\w+)|).to_a[1]
-      tweet[:attachmentURL] and tweet[:tweet].gsub!(tweet[:attachmentURL] , "")
+      tweet[:attachmentURL] = tweet[:tweet].scan(%r|(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)|).to_a.flatten
+      tweet[:attachmentURL].each {|au| tweet[:tweet].gsub!(au , "")}
       # ハッシュタグを抜き出す
       tweet[:hashtag] = tweet[:tweet].scan(%r|\s?(#[^ 　]+)\s?|).to_a.flatten
       tweet[:hashtag].each {|ht| tweet[:tweet].gsub!(ht , "")}
