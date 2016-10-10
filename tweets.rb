@@ -11,7 +11,7 @@ class Tweets
       next if columns[3].nil? or columns[5].nil?
       tweet = {:date => columns[3] , :tweet => columns[5]}
       # リプライ情報を抜き出す
-      tweet[:reply_to] = tweet[:tweet].scan(/(@\w+)^@/).flatten
+      tweet[:reply_to] = tweet[:tweet].scan(/(@\w+)/).flatten
       tweet[:reply_to].each {|rp| tweet[:tweet].gsub!(rp , "")}
       # URLを抜き出す
       tweet[:attachment_url] = tweet[:tweet].scan(%r|(https?://[\w/:%#\$&\?\(\)~\.=\+\-]+)|).flatten
@@ -22,6 +22,12 @@ class Tweets
       @tweets.push(tweet)
     end
     @tweets.shift
+  end
+
+  # リプライ率を計算する
+  def reply_late
+    reply_tweet = @tweets.select {|t| ! t[:reply_to].empty?}
+    return reply_tweet.count.to_f / @tweets.count.to_f * 100
   end
 
   # 日付文字列を指定し、それに当てはまるツイートのリストを戻す
