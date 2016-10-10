@@ -38,6 +38,14 @@ class Tweets
     return users.sort {|(k1 , v1) , (k2 , v2)| v2 <=> v1}
   end
 
+  # ハッシュタグのランキングを生成する
+  def hash_tag_ranking
+    hash_tags = Hash.new {|h , k| h[k] = 0}
+    hash = @tweets.map {|t| t[:hash_tag]}.select {|h| h.size > 0}
+    hash.each {|h| h.each {|tag| hash_tags[tag] += 1}}
+    return hash_tags.sort {|(k1 , v1) , (k2 , v2)| v2 <=> v1}
+  end
+
   # 日付文字列を指定し、それに当てはまるツイートのリストを戻す
   def search_date(date)
     @tweets.select {|t| t[:date].match(date)}
@@ -51,6 +59,11 @@ class Tweets
   # ユーザ名を指定し、それが含まれるリプライツイートのリストを戻す
   def search_reply(user)
     @tweets.select {|t| t[:reply_to].include?("@" + user)}
+  end
+
+  # ハッシュタグを指定し、それが含まれるツイートのリストを戻す
+  def search_hash_tag(hash_tag)
+    @tweets.select {|t| t[:hash_tag].include?("#" + hash_tag)}
   end
 
   # 全ツイートを戻す
