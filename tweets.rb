@@ -30,6 +30,14 @@ class Tweets
     return reply_tweet.count.to_f / @tweets.count.to_f * 100
   end
 
+  # リプライ対象ユーザのランキングを生成する
+  def reply_ranking
+    users = Hash.new {|h , k| h[k] = 0}
+    reply = @tweets.map {|t| t[:reply_to]}.select {|t| t.size > 0}
+    reply.each {|r| r.each {|user| users[user] += 1}}
+    return users.sort {|(k1 , v1) , (k2 , v2)| v2 <=> v1}
+  end
+
   # 日付文字列を指定し、それに当てはまるツイートのリストを戻す
   def search_date(date)
     @tweets.select {|t| t[:date].match(date)}
@@ -38,6 +46,11 @@ class Tweets
   # テキストを指定し、それが含まれるツイートのリストを戻す
   def search_tweet(tweet)
     @tweets.select {|t| t[:tweet].match(tweet)}
+  end
+
+  # ユーザ名を指定し、それが含まれるリプライツイートのリストを戻す
+  def search_reply(user)
+    @tweets.select {|t| t[:reply_to].include?("@" + user)}
   end
 
   # 全ツイートを戻す
